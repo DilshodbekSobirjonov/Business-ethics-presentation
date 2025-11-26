@@ -39,7 +39,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 80px 20px;
+            padding: 30px 20px;
             position: relative;
             opacity: 0;
             transform: translateY(50px);
@@ -139,7 +139,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            background: url('mainbg.jpg');
+            background-size: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -153,11 +154,6 @@
             margin-bottom: 30px;
             letter-spacing: -3px;
             line-height: 1.1;
-        }
-
-        .glitch {
-            position: relative;
-            display: inline-block;
         }
 
         .subtitle {
@@ -175,26 +171,10 @@
             display: inline-block;
         }
 
-        /* Pulsing dot animation */
-        .pulse-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            margin: 0 5px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.8); }
-        }
-
-        /* Slide 2 - Introduction */
-        .intro-grid {
+        /* Slide 2 - Introduction with Gallery Grid */
+        .intro-layout {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1.2fr;
             gap: 60px;
             align-items: center;
         }
@@ -205,22 +185,33 @@
             font-weight: 300;
         }
 
-        .placeholder {
-            width: 100%;
-            aspect-ratio: 16/9;
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 120px);
+            gap: 15px;
+        }
+
+        .grid-item {
             background: var(--bg-secondary);
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--text-secondary);
-            font-size: 1rem;
+            font-size: 0.85rem;
             border: 1px solid #222;
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease;
         }
 
-        .placeholder::before {
+        .grid-item:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .grid-item::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -236,16 +227,39 @@
             100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
+        /* Grid item sizes */
+        .grid-item:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; } /* 1x1 */
+        .grid-item:nth-child(2) { grid-column: 2 / 3; grid-row: 1 / 3; } /* 9x16 vertical */
+        .grid-item:nth-child(3) { grid-column: 3 / 4; grid-row: 1 / 2; } /* 1x1 */
+        .grid-item:nth-child(5) { grid-column: 3 / 4; grid-row: 2 / 4; } /* 9x16 vertical */
+        .grid-item:nth-child(6) { grid-column: 1 / 2; grid-row: 2 / 4; } /* 1x1 */
+        .grid-item:nth-child(7) { grid-column: 2 / 3; grid-row: 3 / 4; } /* 1x1 */
+
+        .grid-img {
+            width: 100%;
+            height: 100%;
+            background-size: 100%;
+        }
+
         /* Slide 3 - Technical Problem */
-        .problem-list {
-            max-width: 900px;
+        .problem-container {
+            max-width: 90vw;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .problem-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
         }
 
         .problem-item {
             background: var(--bg-secondary);
             padding: 40px;
-            margin: 30px 0;
             border-radius: 10px;
             border-left: 4px solid var(--accent);
             font-size: clamp(1.2rem, 2vw, 1.6rem);
@@ -254,20 +268,6 @@
             transition: opacity 0.8s ease, transform 0.8s ease;
             font-weight: 300;
             position: relative;
-            overflow: hidden;
-        }
-
-        .problem-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--accent);
-            transform: scaleY(0);
-            transform-origin: top;
-            transition: transform 0.8s ease;
         }
 
         .section.visible .problem-item {
@@ -275,13 +275,24 @@
             transform: translateX(0);
         }
 
-        .section.visible .problem-item::before {
-            transform: scaleY(1);
-        }
-
         .section.visible .problem-item:nth-child(1) { transition-delay: 0.2s; }
         .section.visible .problem-item:nth-child(2) { transition-delay: 0.4s; }
         .section.visible .problem-item:nth-child(3) { transition-delay: 0.6s; }
+
+        .problem-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            border: 1px solid #222;
+            position: relative;
+            overflow: hidden;
+        }
 
         .section-title {
             font-size: clamp(2rem, 4vw, 3.5rem);
@@ -344,24 +355,27 @@
             font-weight: 400;
         }
 
-        /* Slide 5 - Casualties */
-        .casualties-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
+        /* Slide 5 - Casualties - FIXED LAYOUT */
+        .casualties-container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
-        .casualties-list {
-            text-align: center;
+        .casualties-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
         }
 
         .casualty-item {
-            margin: 40px 0;
-            padding: 30px;
+            padding: 30px 40px;
             background: var(--bg-secondary);
             border-radius: 10px;
-            position: relative;
+            text-align: center;
+            min-width: 250px;
+            border: 1px solid #222;
         }
 
         .casualty-number {
@@ -373,7 +387,7 @@
         }
 
         .casualty-text {
-            font-size: clamp(1.2rem, 2vw, 1.6rem);
+            font-size: clamp(1rem, 2vw, 1.3rem);
             font-weight: 300;
         }
 
@@ -381,16 +395,9 @@
             font-size: clamp(4rem, 8vw, 6rem);
             font-weight: 900;
             color: var(--accent);
-            margin-top: 50px;
+            text-align: center;
+            margin-bottom: 50px;
             letter-spacing: -3px;
-            animation: fadeInScale 1s ease forwards;
-            animation-delay: 1s;
-            opacity: 0;
-        }
-
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
         }
 
         .video-placeholder {
@@ -408,21 +415,23 @@
             overflow: hidden;
         }
 
-        /* Slide 6 - Financial Impact */
-        .financial-grid {
-            display: grid;
-            gap: 30px;
-            max-width: 900px;
-            margin: 50px auto 0;
+        /* Slide 6 - Financial Impact - FIXED */
+        .financial-boxes {
+            display: flex;
+            justify-content: space-between;
+            max-width: 70vw;
+            margin: 0 auto 20px;
+            flex-wrap: wrap;
         }
 
         .financial-item {
             background: var(--bg-secondary);
-            padding: 40px;
+            padding: 30px 40px;
             border-radius: 10px;
             text-align: center;
             border: 1px solid #222;
             transition: transform 0.3s ease;
+            min-width: 250px;
         }
 
         .financial-item:hover {
@@ -430,7 +439,7 @@
         }
 
         .financial-number {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 900;
             color: var(--accent-soft);
             margin-bottom: 15px;
@@ -438,16 +447,19 @@
         }
 
         .financial-text {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-size: clamp(1rem, 2vw, 1.2rem);
             font-weight: 300;
         }
 
         .chart-box {
             width: 100%;
-            height: 300px;
-            background: var(--bg-secondary);
+            max-width: 70vw;
+            aspect-ratio: 16/9;
+            background: url('chart.png');
+            background-size: cover;
             border-radius: 10px;
-            margin-top: 50px;
+            margin: 0 auto;
+            border: 5px solid gray;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -536,61 +548,102 @@
             font-weight: 300;
         }
 
-        /* Sources Section */
+        /* Sources Marquee */
         .sources-section {
-            max-width: 1000px;
-            margin: 80px auto 0;
-            padding: 50px;
+            width: 100%;
             background: var(--bg-secondary);
+            border-top: 1px solid #222;
+            padding: 30px 0;
+            margin-top: 80px;
+        }
+
+        .sources-header {
+            text-align: left;
+            padding: 0 40px 20px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .marquee-container {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee-content {
+            display: flex;
+            gap: 40px;
+            animation: marquee 60s linear infinite;
+            width: fit-content;
+        }
+
+        .marquee-content:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .source-card {
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px 30px;
             border-radius: 10px;
-            border: 1px solid #222;
-        }
-
-        .sources-title {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            font-weight: 700;
-            text-align: center;
-            letter-spacing: -1px;
-        }
-
-        .sources-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .source-item {
-            margin: 20px 0;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 8px;
-            border-left: 3px solid var(--accent);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: transform 0.3s ease, background 0.3s ease;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
-        .source-item:hover {
-            transform: translateX(10px);
+        .source-card:hover {
+            transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.05);
         }
 
-        .source-link {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 1.1rem;
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            transition: color 0.3s ease;
+        .source-logo {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
         }
 
-        .source-link:hover {
-            color: var(--accent);
+        .source-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .source-info {
+            flex: 1;
+        }
+
+        .source-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--text-primary);
         }
 
         .source-description {
             color: var(--text-secondary);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 300;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         /* Next Button */
@@ -652,14 +705,22 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .intro-grid,
-            .casualties-grid {
+            .intro-layout {
                 grid-template-columns: 1fr;
                 gap: 40px;
             }
 
-            .cards-grid {
+            .image-grid {
+                grid-template-rows: repeat(3, 100px);
+            }
+
+            .problem-container {
                 grid-template-columns: 1fr;
+            }
+
+            .financial-boxes {
+                flex-direction: column;
+                align-items: center;
             }
 
             .section {
@@ -674,19 +735,14 @@
                 padding: 30px 20px;
             }
 
-            .sources-section {
-                padding: 30px 20px;
+            .source-card {
+                min-width: 250px;
             }
-        }
 
-        /* Parallax effect */
-        .parallax-layer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
+            .sources-header {
+                padding: 0 20px 15px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -703,46 +759,70 @@
     <!-- Slide 1: Hero -->
     <section class="section hero" data-section="1">
         <div class="hero-bg">
-            <div class="placeholder-img">[ Boeing 737 MAX Photo Placeholder ]</div>
+            <div class="placeholder-img"></div>
         </div>
         <div class="section-content">
-            <h1>Business Ethics Case Study:<br><span class="accent-text glitch">Boeing 737 MAX</span></h1>
+            <h1>Business Ethics Case Study:<br><span class="accent-text">Boeing 737 MAX</span></h1>
             <p class="subtitle">A story of how pressure for speed and profit led to catastrophic mistakes</p>
         </div>
         <div class="scroll-indicator"></div>
-        <button class="next-btn" onclick="scrollToNext(1)">NEXT</button>
+        <button class="next-btn" onclick="scrollToNext(this, 1)">NEXT</button>
     </section>
 
-    <!-- Slide 2: Introduction -->
+    <!-- Slide 2: Introduction with Gallery Grid -->
     <section class="section" data-section="2">
         <div class="section-content">
-            <div class="intro-grid">
+            <div class="intro-layout">
                 <div>
                     <p class="intro-text">In the late 2010s, Boeing rushed to release the new 737 MAX model to compete with Airbus. Decisions were made hastily — leading to ethical violations and tragic consequences.</p>
                 </div>
-                <div class="placeholder">[ Image Placeholder ]</div>
+                <div class="image-grid">
+                    <div class="grid-item">
+                        <img class="grid-img" src="grid11.jpg">
+                    </div>
+                    <div class="grid-item">
+                        <img class="grid-img" src="grid92.jpg">
+                    </div>
+                    <div class="grid-item">
+                        <img class="grid-img" src="grid12.jpg">
+                    </div>
+                    <div class="grid-item">
+                        <img class="grid-img" src="grid13.jpg">
+                    </div>
+                    <div class="grid-item">
+                        <img class="grid-img" src="grid93.jpg">
+                    </div>
+                    <div class="grid-item">
+                        <img class="grid-img" src="grid94.jpg">
+                    </div>
+                </div>
             </div>
         </div>
-        <button class="next-btn" onclick="scrollToNext(2)">NEXT</button>
+        <button class="next-btn" onclick="scrollToNext(this, 2)">NEXT</button>
     </section>
 
     <!-- Slide 3: Technical Problem -->
     <section class="section" data-section="3">
         <div class="section-content">
             <h2 class="section-title">The Technical Problem</h2>
-            <div class="problem-list">
-                <div class="problem-item">
-                    <strong>The main issue — the MCAS system.</strong>
+            <div class="problem-container">
+                <div class="problem-list">
+                    <div class="problem-item">
+                        <strong>The main issue — the MCAS system.</strong>
+                    </div>
+                    <div class="problem-item">
+                        The system could push the aircraft's nose down even during safe flight conditions.
+                    </div>
+                    <div class="problem-item">
+                        Pilots were not trained on MCAS operations to "save time and money" on training programs.
+                    </div>
                 </div>
-                <div class="problem-item">
-                    The system could push the aircraft's nose down even during safe flight conditions.
-                </div>
-                <div class="problem-item">
-                    Pilots were not trained on MCAS operations to "save time and money" on training programs.
+                <div class="problem-video">
+                    <video style="width: 100%;" src="stabilization.mp4" muted loop autoplay></video>
                 </div>
             </div>
         </div>
-        <button class="next-btn" onclick="scrollToNext(3)">NEXT</button>
+        <button class="next-btn" onclick="scrollToNext(this, 3)">NEXT</button>
     </section>
 
     <!-- Slide 4: Leaked Messages -->
@@ -760,16 +840,15 @@
                 </div>
             </div>
         </div>
-        <button class="next-btn" onclick="scrollToNext(4)">NEXT</button>
+        <button class="next-btn" onclick="scrollToNext(this, 4)">NEXT</button>
     </section>
 
-    <!-- Slide 5: Casualties -->
+    <!-- Slide 5: Casualties - FIXED -->
     <section class="section" data-section="5">
         <div class="section-content">
             <h2 class="section-title">The Disasters</h2>
-            <div class="casualties-grid">
-                <div class="video-placeholder">[ Video Placeholder ]</div>
-                <div class="casualties-list">
+            <div class="casualties-container">
+                <div class="casualties-stats">
                     <div class="casualty-item">
                         <div class="casualty-number">189</div>
                         <div class="casualty-text">Lion Air Flight 610</div>
@@ -778,24 +857,27 @@
                         <div class="casualty-number">157</div>
                         <div class="casualty-text">Ethiopian Airlines Flight 302</div>
                     </div>
-                    <div class="total-casualties">346 lives lost</div>
+                </div>
+                <div class="total-casualties">346 lives lost</div>
+                <div class="video-placeholder">
+                     <video style="width: 100%;" src="disaster.mp4" muted loop autoplay></video>
                 </div>
             </div>
         </div>
-        <button class="next-btn" onclick="scrollToNext(5)">NEXT</button>
+        <button class="next-btn" onclick="scrollToNext(this, 5)">NEXT</button>
     </section>
 
-    <!-- Slide 6: Financial Impact -->
+    <!-- Slide 6: Financial Impact - FIXED -->
     <section class="section" data-section="6">
         <div class="section-content">
             <h2 class="section-title">Financial Consequences</h2>
-            <div class="financial-grid">
+            <div class="financial-boxes">
                 <div class="financial-item">
                     <div class="financial-number">$20+ billion</div>
                     <div class="financial-text">Boeing's losses</div>
                 </div>
                 <div class="financial-item">
-                    <div class="financial-number">↓ 50%</div>
+                    <div class="financial-number">↓ 70% +</div>
                     <div class="financial-text">Stock price decline</div>
                 </div>
                 <div class="financial-item">
@@ -803,9 +885,9 @@
                     <div class="financial-text">737 MAX production halt</div>
                 </div>
             </div>
-            <div class="chart-box">[ Chart Placeholder ]</div>
+            <div class="chart-box"></div>
         </div>
-        <button class="next-btn" onclick="scrollToNext(6)">NEXT</button>
+        <button class="next-btn" onclick="scrollToNext(this, 6)">NEXT</button>
     </section>
 
     <!-- Slide 7: Stabilization -->
@@ -830,7 +912,7 @@
                 </div>
             </div>
         </div>
-        <button class="next-btn" onclick="scrollToNext(7)">NEXT</button>
+        <button class="next-btn" onclick="scrollToNext(this, 7)">NEXT</button>
     </section>
 
     <!-- Slide 8: Conclusion -->
@@ -840,48 +922,202 @@
             <p class="conclusion-text">
                 This case demonstrates that business ethics violations can lead not only to reputational damage, but to loss of human life. Management's responsibility is to always prioritize safety over profit.
             </p>
-
-            <!-- Sources Section -->
-            <div class="sources-section">
-                <h3 class="sources-title">Sources & References</h3>
-                <ul class="sources-list">
-                    <li class="source-item">
-                        <a href="https://www.nytimes.com/2019/03/23/business/boeing-737-max-crash.html" target="_blank" class="source-link">The New York Times</a>
+        </div>
+        
+        <!-- Sources Marquee -->
+        <div class="sources-section">
+            <div class="sources-header">INFORMATION SOURCES</div>
+            <div class="marquee-container">
+                <div class="marquee-content" id="marqueeContent">
+                <!-- Source 1 -->
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="newyorktimes.jpg" alt="The New York Times">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">The New York Times</div>
                         <p class="source-description">Boeing 737 MAX: What's Happened After the 2 Deadly Crashes</p>
-                    </li>
-                    <li class="source-item">
-                        <a href="https://www.bbc.com/news/business-54175359" target="_blank" class="source-link">BBC News</a>
+                    </div>
+                </div>
+
+                <!-- Source 2 -->
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="bbc.jpg" alt="BBC News">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">BBC News</div>
                         <p class="source-description">Boeing 737 Max: What went wrong?</p>
-                    </li>
-                    <li class="source-item">
-                        <a href="https://www.wsj.com/articles/the-four-second-catastrophe-how-boeing-doomed-the-737-max-11560451537" target="_blank" class="source-link">The Wall Street Journal</a>
+                    </div>
+                </div>
+
+                <!-- Source 3 -->
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="wsj.jpg" alt="The Wall Street Journal">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">The Wall Street Journal</div>
                         <p class="source-description">The Four-Second Catastrophe: How Boeing Doomed the 737 MAX</p>
-                    </li>
-                    <li class="source-item">
-                        <a href="https://www.reuters.com/article/us-ethiopia-airplane-victims-idUSKCN1R10G7" target="_blank" class="source-link">Reuters</a>
+                    </div>
+                </div>
+
+                <!-- Source 4 -->
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="reuters.jpg" alt="Reuters">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">Reuters</div>
                         <p class="source-description">Ethiopian Airlines crash victims from 35 countries</p>
-                    </li>
-                    <li class="source-item">
-                        <a href="https://www.cnbc.com/2020/01/10/boeings-737-max-crisis-by-the-numbers.html" target="_blank" class="source-link">CNBC</a>
+                    </div>
+                </div>
+
+                <!-- Source 5 -->
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="cnbc.jpg" alt="CNBC">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">CNBC</div>
                         <p class="source-description">Boeing's 737 Max crisis: The financial toll</p>
-                    </li>
-                    <li class="source-item">
-                        <a href="https://www.theguardian.com/business/2020/jan/09/boeing-737-max-house-report-findings" target="_blank" class="source-link">The Guardian</a>
-                        <p class="source-description">Boeing 737 Max: internal messages reveal concerns over plane's systems</p>
-                    </li>
-                    <li class="source-item">
-                        <a href="https://www.forbes.com/sites/jeremybogaisky/2019/10/18/boeing-737-max-mcas-explained/" target="_blank" class="source-link">Forbes</a>
+                    </div>
+                </div>
+
+                <!-- Source 6 -->
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="theguardian.jpg" alt="The Guardian">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">The Guardian</div>
+                        <p class="source-description">Boeing 737 Max: internal messages reveal concerns</p>
+                    </div>
+                </div>
+
+                <!-- Source 7 -->
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="forbes.jpg" alt="Forbes">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">Forbes</div>
                         <p class="source-description">What Really Brought Down The Boeing 737 Max?</p>
-                    </li>
-                    <li class="source-item">
-                        <a href="https://www.bloomberg.com/news/articles/2019-11-13/boeing-s-737-max-software-outsourced-to-9-an-hour-engineers" target="_blank" class="source-link">Bloomberg</a>
+                    </div>
+                </div>
+
+                <!-- Source 8 -->
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="bloomberg.jpg" alt="Bloomberg">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">Bloomberg</div>
                         <p class="source-description">Boeing's 737 Max Software Outsourced to $9-an-Hour Engineers</p>
-                    </li>
-                    <li class="source-item">
-                        <a href="https://www.seattletimes.com/business/boeing-aerospace/failed-certification-faa-missed-safety-issues-in-the-737-max-system-implicated-in-the-lion-air-crash/" target="_blank" class="source-link">The Seattle Times</a>
+                    </div>
+                </div>
+
+                <!-- Source 9 -->
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="seattletimes.jpg" alt="The Seattle Times">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">The Seattle Times</div>
                         <p class="source-description">FAA missed critical safety issues in 737 MAX certification</p>
-                    </li>
-                </ul>
+                    </div>
+                </div>
+
+                <!-- Duplicate for seamless loop -->
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="newyorktimes.jpg" alt="The New York Times">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">The New York Times</div>
+                        <p class="source-description">Boeing 737 MAX: What's Happened After the 2 Deadly Crashes</p>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="bbc.jpg" alt="BBC News">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">BBC News</div>
+                        <p class="source-description">Boeing 737 Max: What went wrong?</p>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="wsj.jpg" alt="The Wall Street Journal">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">The Wall Street Journal</div>
+                        <p class="source-description">The Four-Second Catastrophe: How Boeing Doomed the 737 MAX</p>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="reuters.jpg" alt="Reuters">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">Reuters</div>
+                        <p class="source-description">Ethiopian Airlines crash victims from 35 countries</p>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="cnbc.jpg" alt="CNBC">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">CNBC</div>
+                        <p class="source-description">Boeing's 737 Max crisis: The financial toll</p>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="theguardian.jpg" alt="The Guardian">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">The Guardian</div>
+                        <p class="source-description">Boeing 737 Max: internal messages reveal concerns</p>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="forbes.jpg" alt="Forbes">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">Forbes</div>
+                        <p class="source-description">What Really Brought Down The Boeing 737 Max?</p>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="bloomberg.jpg" alt="Bloomberg">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">Bloomberg</div>
+                        <p class="source-description">Boeing's 737 Max Software Outsourced to $9-an-Hour Engineers</p>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-logo">
+                        <img src="seattletimes.jpg" alt="The Seattle Times">
+                    </div>
+                    <div class="source-info">
+                        <div class="source-name">The Seattle Times</div>
+                        <p class="source-description">FAA missed critical safety issues in 737 MAX certification</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -918,8 +1154,8 @@
             observer.observe(section);
         });
 
-        // Smooth scroll to next section
-        function scrollToNext(currentSection) {
+        // Smooth scroll to next section - FIXED
+        function scrollToNext(button, currentSection) {
             const nextSection = document.querySelector(`[data-section="${currentSection + 1}"]`);
             if (nextSection) {
                 nextSection.scrollIntoView({ behavior: 'smooth' });
@@ -938,16 +1174,6 @@
                     if (hero) {
                         hero.style.transform = `translateY(${scrolled * 0.5}px)`;
                     }
-                    
-                    // Parallax for problem items
-                    const problemItems = document.querySelectorAll('.problem-item');
-                    problemItems.forEach((item, index) => {
-                        const rect = item.getBoundingClientRect();
-                        const speed = (index + 1) * 0.05;
-                        if (rect.top < window.innerHeight && rect.bottom > 0) {
-                            item.style.transform = `translateX(${scrolled * speed}px)`;
-                        }
-                    });
                     
                     ticking = false;
                 });
@@ -982,18 +1208,6 @@
             
             setTimeout(typeWriter, 1000);
         }
-
-        // Add hover effect to source links
-        const sourceLinks = document.querySelectorAll('.source-link');
-        sourceLinks.forEach(link => {
-            link.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateX(5px)';
-            });
-            
-            link.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateX(0)';
-            });
-        });
 
         // Counter animation for casualty numbers
         function animateCounter(element, target, duration) {
@@ -1032,4 +1246,4 @@
     </script>
 
 </body>
-                      </html>
+</html>
